@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spilt Milk Nannies Journey</title>
+
+  <style>
+    @font-face {
+      font-family: "Brandon";
+      src: local("Brandon Grotesque"), local("Brandon Regular");
+    }
+
+    :root {
+      --teal: #73c5ca;
+      --dark-teal: #31858f;
+      --coral: #f15673;
+      --cream: #fff8ef;
+      --yellow: #ffe57a;
+      --orange: #ff8a13;
+      --pink: #e99aaa;
+      --purple: #8b6a9d;
+      --text: #454545;
+      --white: #ffffff;
+      --shadow: 0 18px 40px rgba(49, 133, 143, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Brandon", "Trebuchet MS", Arial, sans-serif;
+      background: var(--cream);
+      color: var(--text);
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      height: 84px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 54px;
+      border-bottom: 1px solid #d7eeee;
+    }
+
+    .logo-img {
+      height: 58px;
+      object-fit: contain;
+    }
+
+    .nav {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .nav a {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 20px;
+    }
+
+    .join-small {
+      background: var(--coral);
+      color: white !important;
+      padding: 8px 32px;
+    }
+
+    main {
+      flex: 1;
+      padding: 34px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .screen {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+      min-height: 650px;
+      background: white;
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      animation: fade 0.35s ease;
+    }
+
+    .screen.active { display: block; }
+
+    .hero {
+      min-height: 650px;
+      background: var(--teal);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px;
+    }
+
+    .milk-row {
+      display: flex;
+      gap: 28px;
+      margin-bottom: 42px;
+    }
+
+    .bottle {
+      width: 72px;
+      height: 150px;
+      background: white;
+      border-radius: 18px 18px 22px 22px;
+      position: relative;
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    .bottle:nth-child(2) { animation-delay: .25s; }
+    .bottle:nth-child(3) { animation-delay: .5s; }
+
+    .bottle::before {
+      content: "";
+      width: 42px;
+      height: 18px;
+      background: var(--dark-teal);
+      position: absolute;
+      top: -14px;
+      left: 15px;
+      border-radius: 5px 5px 0 0;
+    }
+
+    .bottle.yellow::before { background: var(--yellow); }
+    .bottle.pink::before { background: var(--coral); }
+
+    .hero h1 {
+      max-width: 850px;
+      font-size: 32px;
+      line-height: 1.6;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero p {
+      max-width: 720px;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    button {
+      border: none;
+      background: var(--coral);
+      color: white;
+      font-size: 22px;
+      padding: 16px 54px;
+      cursor: pointer;
+      transition: .2s;
+      font-family: inherit;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 24px rgba(241, 86, 115, .28);
+    }
+
+    .content { padding: 48px; }
+
+    .eyebrow {
+      color: var(--dark-teal);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: 42px;
+      margin: 10px 0 16px;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      line-height: 1.6;
+      max-width: 760px;
+    }
+
+    .persona-grid,
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 36px;
+    }
+
+    .card,
+    .choice-card {
+      border: 2px solid #e8f4f5;
+      border-radius: 22px;
+      padding: 28px;
+      background: var(--cream);
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .card:hover,
+    .choice-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--coral);
+      box-shadow: var(--shadow);
+    }
+
+    .person-graphic {
+      height: 150px;
+      border-radius: 18px;
+      margin-bottom: 18px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .person {
+      width: 86px;
+      height: 112px;
+      position: relative;
+      animation: gentleBob 2s ease-in-out infinite;
+    }
+
+    .head {
+      width: 54px;
+      height: 54px;
+      background: #5b3928;
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 16px;
+    }
+
+    .face {
+      width: 42px;
+      height: 42px;
+      background: #f5c29b;
+      border-radius: 50%;
+      position: absolute;
+      top: 8px;
+      left: 22px;
+    }
+
+    .body {
+      width: 86px;
+      height: 68px;
+      background: white;
+      border-radius: 42px 42px 12px 12px;
+      position: absolute;
+      bottom: 0;
+    }
+
+    .eye {
+      width: 5px;
+      height: 5px;
+      background: #222;
+      border-radius: 50%;
+      position: absolute;
+      top: 24px;
+    }
+
+    .eye.left { left: 34px; }
+    .eye.right { left: 49px; }
+
+    .smile {
+      width: 18px;
+      height: 10px;
+      border-bottom: 3px solid #222;
+      border-radius: 0 0 20px 20px;
+      position: absolute;
+      top: 34px;
+      left: 36px;
+    }
+
+    .wheel {
+      width: 56px;
+      height: 56px;
+      border: 6px solid #222;
+      border-radius: 50%;
+      position: absolute;
+      right: 20px;
+      bottom: 12px;
+      opacity: .75;
+      animation: wheelSpin 3s linear infinite;
+    }
+
+    .orange { background: var(--orange); }
+    .pink-bg { background: var(--pink); }
+    .purple { background: var(--purple); }
+
+    .journey-layout {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      min-height: 650px;
+    }
+
+    .sidebar {
+      background: var(--dark-teal);
+      color: white;
+      padding: 34px;
+    }
+
+    .step {
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,.28);
+      opacity: .65;
+    }
+
+    .active-step {
+      opacity: 1;
+      font-weight: 700;
+      color: var(--yellow);
+    }
+
+    .journey-main { padding: 42px; }
+
+    .video-box {
+      background: #edfafa;
+      border: 2px dashed var(--dark-teal);
+      border-radius: 22px;
+      padding: 50px;
+      text-align: center;
+      margin: 28px 0;
+    }
+
+    .highlight {
+      background: #fff0f3;
+      border-left: 8px solid var(--coral);
+      padding: 20px;
+      border-radius: 14px;
+      line-height: 1.6;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    .selected-pill {
+      display: inline-block;
+      background: var(--teal);
+      color: white;
+      padding: 8px 18px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    .booking {
+      background: var(--cream);
+      border-radius: 22px;
+      padding: 30px;
+      margin-top: 26px;
+      border: 2px solid #f5d7dd;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .thank-you {
+      min-height: 650px;
+      background: var(--teal);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 60px;
+    }
+
+    .milk-splash {
+      font-size: 120px;
+      animation: splash 1.3s infinite alternate;
+    }
+
+    .thank-you h2 {
+      color: white;
+      font-size: 54px;
+    }
+
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-16px) rotate(2deg); }
+    }
+
+    @keyframes gentleBob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes wheelSpin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes splash {
+      from { transform: scale(1) rotate(-4deg); }
+      to { transform: scale(1.08) rotate(4deg); }
+    }
+
+    @media (max-width: 900px) {
+      header { padding: 0 24px; }
+      .persona-grid,
+      .choice-grid { grid-template-columns: 1fr; }
+      .journey-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <header>
+      <img src="assets/spilt-milk-logo.png" alt="Spilt Milk Nannies logo" class="logo-img" />
+      <nav class="nav">
+        <a href="#">login</a>
+        <a class="join-small" href="#">join</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="screen active" id="welcome">
+        <div class="hero">
+          <div class="milk-row">
+            <div class="bottle"></div>
+            <div class="bottle yellow"></div>
+            <div class="bottle pink"></div>
+          </div>
+
+          <h1>A babysitting service that connects great nannies to busy parents who need flexible childcare.</h1>
+
+          <p>
+            Step into the nanny journey and explore how our redesign supports onboarding,
+            availability, booking requests, appointment prep, and post-appointment feedback.
+          </p>
+
+          <button onclick="showScreen('personas')">start journey</button>
+        </div>
+      </section>
+
+      <section class="screen" id="personas">
+        <div class="content">
+          <div class="eyebrow">Choose a persona</div>
+          <h2>Who are you role-playing as today?</h2>
+          <p class="subtitle">
+            Each persona represents a different nanny need. Your choices will guide the journey and highlight how our redesign supports real nanny workflows.
+          </p>
+
+          <div class="persona-grid">
+            <div class="card" onclick="selectPersona('betsy')">
+              <div class="person-graphic orange">
+                <div class="person">
+                  <div class="head"></div>
+                  <div class="face"></div>
+                  <div class="eye left"></div>
+                  <div class="eye right"></div>
+                  <div class="smile"></div>
+                  <div class="body"></div>
+                  <div class="wheel"></div>
+                </div>
+              </div>
+              <h3>Betsy</h3>
+              <p><strong>The Accessibility-Focused Nanny</strong></p>
+              <p>A middle-aged nanny who is a wheelchair user and needs one-floor accessible homes.</p>
+            </div>
+
+            <div class="card" onclick="selectPersona('andy')">
+              <div class="person-graphic pink-bg">
+                <div class="person">
+                  <div class="head"></div>
+                  <div class="face"></div>
+                  <div class="eye left"></div>
+                  <div class="eye right"></div>
+                  <div class="smile"></div>
+                  <div class="body"></div>
+                </div>
+              </div>
+              <h3>Andy</h3>
+              <p><strong>The Student Nanny</strong></p>
+              <p>A part-time student nanny balancing classes, commuting, and childcare work.</p>
+            </div>
+
+            <div class="card" onclick="selectPersona('maria')">
+              <div class="person-graphic purple">
+                <div class="person">
+                  <div class="head"></div>
+                  <div class="face"></div>
+                  <div class="eye left"></div>
+                  <div class="eye right"></div>
+                  <div class="smile"></div>
+                  <div class="body"></div>
+                </div>
+              </div>
+              <h3>Maria</h3>
+              <p><strong>The Infant Care Specialist</strong></p>
+              <p>A nanny who specializes in infant care and wants clear child-specific information.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="journey">
+        <div class="journey-layout">
+          <aside class="sidebar">
+            <h3 id="sidePersona">Nanny Journey</h3>
+            <div class="step active-step" id="step0">1. Onboarding</div>
+            <div class="step" id="step1">2. Family Preferences</div>
+            <div class="step" id="step2">3. Availability</div>
+            <div class="step" id="step3">4. Booking Request</div>
+            <div class="step" id="step4">5. Pre-Appointment</div>
+            <div class="step" id="step5">6. Post-Appointment</div>
+          </aside>
+
+          <section class="journey-main" id="journeyContent"></section>
+        </div>
+      </section>
+
+      <section class="screen" id="thanks">
+        <div class="thank-you">
+          <div class="milk-splash">🥛</div>
+          <h2>Thank you!</h2>
+          <p class="subtitle">
+            You completed the full nanny journey, from onboarding to post-appointment feedback.
+          </p>
+          <button onclick="restart()">try another persona</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    let persona = null;
+
+    const personas = {
+      betsy: {
+        name: "Betsy",
+        title: "The Accessibility-Focused Nanny",
+        description: "Betsy is a middle-aged nanny who is a wheelchair user and needs accessible one-floor households.",
+        preference: "Accessible one-story household"
+      },
+      andy: {
+        name: "Andy",
+        title: "The Student Nanny",
+        description: "Andy is a part-time student nanny balancing classes, work, commuting, and flexible availability.",
+        preference: "Families within a 15-mile radius"
+      },
+      maria: {
+        name: "Maria",
+        title: "The Infant Care Specialist",
+        description: "Maria specializes in infant care and wants detailed child routines, safety notes, and family expectations.",
+        preference: "Infant care appointments"
+      }
+    };
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function setStep(activeIndex) {
+      for (let i = 0; i <= 5; i++) {
+        document.getElementById(`step${i}`).classList.remove("active-step");
+      }
+      document.getElementById(`step${activeIndex}`).classList.add("active-step");
+    }
+
+    function selectPersona(key) {
+      persona = personas[key];
+      document.getElementById("sidePersona").innerText = persona.name + "'s Journey";
+      showScreen("journey");
+      onboarding();
+    }
+
+    function onboarding() {
+      setStep(0);
+      document.getElementById("journeyContent").innerHTML = `
+        <span class="selected-pill">${persona.name}: ${persona.title}</span>
+        <div class="eyebrow">Prototype Moment</div>
+        <h2>Nanny Onboarding Experience</h2>
+        <p class="subtitle">${persona.description}</p>
+
+        <div class="video-box">
+          <h3>Insert onboarding prototype video here</h3>
+          <p>Show your redesigned nanny onboarding walkthrough here.</p>
+        </div>
+
+        <div class="highlight">
+          <strong>What changed:</strong> The redesigned onboarding introduces preferences,
+          accessibility needs, availability, and care experience earlier in the flow.
+        </div>
+
+        <div class="button-row">
+          <button onclick="familyPreferences()">continue</button>
+        </div>
+      `;
+    }
+
+    function familyPreferences() {
+      setStep(1);
+      document.getElementById("journeyContent").innerHTML = `
+        <span class="selected-pill">${persona.name}'s Preferences</span>
+        <div class="eyebrow">Family Preferences</div>
+        <h2>Choose what matters most</h2>
+
+        <div class="choice-grid">
+          <div class="choice-card" onclick="availability('15 mile radius')">
+            <h3>15-mile radius</h3>
+            <p>Prioritizes families within a manageable travel distance.</p>
+          </div>
+
+          <div class="choice-card" onclick="availability('No pets')">
+            <h3>No pets</h3>
+            <p>Helps nannies avoid homes that may not fit their comfort or health needs.</p>
+          </div>
+
+          <div class="choice-card" onclick="availability('${persona.preference}')">
+            <h3>${persona.preference}</h3>
+            <p>A personalized preference based on this persona’s needs.</p>
+          </div>
+        </div>
+
+        <div class="highlight">
+          <strong>Design improvement:</strong> Preferences reduce mismatched bookings and make the service more respectful of nanny needs.
+        </div>
+      `;
+    }
+
+    function availability(choice) {
+      setStep(2);
+      document.getElementById("journeyContent").innerHTML = `
+        <span class="selected-pill">Selected preference: ${choice}</span>
+        <div class="eyebrow">Availability</div>
+        <h2>Choose dates to add availability</h2>
+
+        <div class="choice-grid">
+          <div class="choice-card" onclick="availabilityPrototype('Monday, June 3')">
+            <h3>Monday, June 3</h3>
+            <p>9:00 AM – 2:00 PM</p>
+          </div>
+
+          <div class="choice-card" onclick="availabilityPrototype('Wednesday, June 5')">
+            <h3>Wednesday, June 5</h3>
+            <p>3:00 PM – 8:00 PM</p>
+          </div>
+
+          <div class="choice-card" onclick="availabilityPrototype('Saturday, June 8')">
+            <h3>Saturday, June 8</h3>
+            <p>10:00 AM – 4:00 PM</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function availabilityPrototype(date) {
+      setStep(2);
+      document.getElementById("journeyContent").innerHTML = `
+        <span class="selected-pill">Availability added: ${date}</span>
+        <div class="eyebrow">Prototype Moment</div>
+        <h2>Availability Prototype</h2>
+
+        <div class="video-box">
+          <h3>Insert availability prototype video here</h3>
+          <p>Show the redesigned availability flow here.</p>
+        </div>
+
+        <div class="highlight">
+          <strong>What changed:</strong> We reduced repeated entry, made scheduling more visible,
+          and created a flow that works better across mobile and desktop.
+        </div>
+
+        <div class="button-row">
+          <button onclick="bookingRequest()">receive booking request</button>
+        </div>
+      `;
+    }
+
+    function bookingRequest() {
+      setStep(3);
+      document.getElementById("journeyContent").innerHTML = `
+        <div class="eyebrow">Booking Request</div>
+        <h2>You received a booking request!</h2>
+
+        <div class="booking">
+          <h3>The Lee Family</h3>
+          <p><strong>Date:</strong> Saturday, June 8</p>
+          <p><strong>Time:</strong> 10:00 AM – 4:00 PM</p>
+          <p><strong>Children:</strong> 1 infant, 1 toddler</p>
+          <p><strong>Location:</strong> Within selected preference range</p>
+        </div>
+
+        <div class="button-row">
+          <button onclick="preAppointment()">accept booking</button>
+        </div>
+      `;
+    }
+
+    function preAppointment() {
+      setStep(4);
+      document.getElementById("journeyContent").innerHTML = `
+        <div class="eyebrow">Pre-Appointment</div>
+        <h2>How would you like to prepare?</h2>
+
+        <div class="choice-grid">
+          <div class="choice-card" onclick="prepResult('family')">
+            <h3>Learn about the family</h3>
+            <p>View household details, accessibility notes, and expectations.</p>
+          </div>
+
+          <div class="choice-card" onclick="prepResult('children')">
+            <h3>Learn about the children</h3>
+            <p>Review routines, interests, allergies, and care notes.</p>
+          </div>
+
+          <div class="choice-card" onclick="prepResult('appointment')">
+            <h3>Prepare for appointment</h3>
+            <p>See a checklist for arrival, care instructions, and reminders.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function prepResult(type) {
+      let title = "";
+      let text = "";
+
+      if (type === "family") {
+        title = "Family Profile";
+        text = "The redesigned family profile helps nannies quickly understand the home, expectations, accessibility details, and communication preferences.";
+      }
+
+      if (type === "children") {
+        title = "Children's Interests & Care Notes";
+        text = "The redesigned child details section makes routines, allergies, interests, and comfort needs easier to find.";
+      }
+
+      if (type === "appointment") {
+        title = "Appointment Prep";
+        text = "The redesigned prep flow gives nannies a clear checklist so they feel ready before arriving.";
+      }
+
+      document.getElementById("journeyContent").innerHTML = `
+        <div class="eyebrow">Pre-Appointment Detail</div>
+        <h2>${title}</h2>
+        <p class="subtitle">${text}</p>
+
+        <div class="highlight">
+          <strong>Human-centered impact:</strong> This reduces uncertainty and helps nannies feel informed, respected, and prepared.
+        </div>
+
+        <div class="button-row">
+          <button onclick="appointment()">go to appointment</button>
+        </div>
+      `;
+    }
+
+    function appointment() {
+      setStep(5);
+      document.getElementById("journeyContent").innerHTML = `
+        <div class="eyebrow">Appointment Complete</div>
+        <h2>The appointment is finished!</h2>
+
+        <div class="choice-grid">
+          <div class="choice-card" onclick="finishFlow()">
+            <h3>Leave feedback & tips</h3>
+            <p>Share useful notes for future nannies or the service team.</p>
+          </div>
+
+          <div class="choice-card" onclick="finishFlow()">
+            <h3>Mark as great / favorite family</h3>
+            <p>Save this family for future preferred bookings.</p>
+          </div>
+
+          <div class="choice-card" onclick="finishFlow()">
+            <h3>Block the family</h3>
+            <p>Prevent future matches if the experience was not a good fit.</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function finishFlow() {
+      showScreen("thanks");
+    }
+
+    function restart() {
+      persona = null;
+      showScreen("personas");
+    }
+  </script>
+</body>
+</html>
