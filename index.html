@@ -3,918 +3,577 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spilt Milk Nannies Redesign Journey</title>
+  <title>Spilt Milk Nannies</title>
 
   <style>
-    @font-face {
-      font-family: "Brandon";
-      src: local("Brandon Grotesque"), local("Brandon Regular");
-    }
-
     :root {
-      --teal: #73c5ca;
-      --dark-teal: #286f77;
-      --coral: #f15673;
-      --cream: #fffaf4;
-      --yellow: #ffe57a;
-      --orange: #ff8a13;
-      --pink: #e99aaa;
-      --purple: #8b6a9d;
-      --text: #3c3c3c;
-      --text-muted: #707070;
+      --teal: #6fc7c9;
+      --coral: #fb5f70;
+      --cream: #f6ead2;
+      --navy: #123978;
+      --text: #333333;
+      --gray: #d9d9d9;
       --white: #ffffff;
-      --border-light: #e3f2f3;
-      --shadow: 0 12px 32px rgba(40, 111, 119, 0.1);
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      font-family: "Brandon", "Trebuchet MS", Arial, sans-serif;
-      background: var(--cream);
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .app {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      height: 80px;
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .logo-badge {
+      font-family: Arial, Helvetica, sans-serif;
       background: var(--teal);
       color: white;
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-
-    .logo-text {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--dark-teal);
-    }
-
-    .nav {
-      display: flex;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 16px;
-      font-weight: 600;
-      transition: color 0.2s;
-    }
-
-    .nav a:hover { color: var(--coral); }
-
-    .presentation-badge {
-      border: 1.5px solid var(--coral);
-      color: var(--coral) !important;
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 14px;
-    }
-
-    main {
-      flex: 1;
-      padding: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      overflow-x: hidden;
     }
 
     .screen {
+      min-height: 100vh;
+      width: 100%;
       display: none;
-      width: 100%;
-      max-width: 1200px;
-      min-height: 680px;
-      background: white;
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .screen.active { 
-      display: block; 
-      animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-
-    /* Welcome / Hero Slide Layout */
-    .hero {
-      min-height: 680px;
-      background: radial-gradient(circle at top left, var(--teal), var(--dark-teal));
-      color: white;
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
+      flex-direction: column;
       align-items: center;
-      padding: 60px;
-      gap: 40px;
-    }
-
-    .hero-text-side {
-      text-align: left;
-    }
-
-    .hero h1 {
-      font-size: 38px;
-      line-height: 1.3;
-      margin-bottom: 24px;
-      font-weight: 700;
-    }
-
-    .hero p {
-      font-size: 18px;
-      line-height: 1.6;
-      opacity: 0.9;
-      margin-bottom: 36px;
-    }
-
-    .hero-graphic-side {
-      display: flex;
       justify-content: center;
-      align-items: center;
+      padding: 48px 7vw;
+      text-align: center;
+      position: relative;
     }
 
-    .hero-illustration {
-      width: 100%;
-      max-width: 380px;
-      opacity: 0.95;
+    .screen.active { display: flex; }
+
+    h1 {
+      font-size: clamp(44px, 6vw, 76px);
+      line-height: 1.1;
+      margin: 0 0 32px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      font-size: 24px;
+      line-height: 1.55;
+      font-style: italic;
+      margin: 0 auto 80px;
     }
 
     button {
       border: none;
+      cursor: pointer;
       background: var(--coral);
       color: white;
+      padding: 18px 42px;
+      border-radius: 16px;
       font-size: 18px;
-      font-weight: 600;
-      padding: 14px 40px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-family: inherit;
+      box-shadow: 0 18px 35px rgba(0,0,0,0.12);
+      transition: 0.25s ease;
     }
 
     button:hover {
-      background: #e04461;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(241, 86, 115, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 42px rgba(0,0,0,0.18);
     }
 
-    /* Content Layouts */
-    .content { padding: 50px; }
-
-    .eyebrow {
-      color: var(--teal);
-      text-transform: uppercase;
-      letter-spacing: 2px;
+    .tag {
+      background: var(--cream);
+      color: #8a6a4c;
+      padding: 8px 24px;
+      border-radius: 999px;
+      letter-spacing: 4px;
       font-size: 14px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    h2 {
-      font-size: 32px;
-      color: var(--dark-teal);
-      margin: 0 0 16px 0;
-    }
-
-    .subtitle {
-      font-size: 18px;
-      line-height: 1.6;
-      color: var(--text-muted);
-      max-width: 800px;
       margin-bottom: 32px;
     }
 
-    /* Persona Screen Updates */
-    .persona-grid, .choice-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-
-    .card, .choice-card {
-      border: 2px solid var(--border-light);
-      border-radius: 16px;
-      padding: 24px;
-      background: white;
-      cursor: pointer;
-      transition: all 0.25s ease;
+    .bottles {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      gap: 70px;
+      margin: 30px 0 70px;
+      align-items: end;
     }
 
-    .card:hover, .choice-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--teal);
-      box-shadow: 0 12px 24px rgba(115, 197, 202, 0.15);
-    }
-
-    .persona-vector {
-      width: 110px;
-      height: 110px;
-      margin-bottom: 16px;
-    }
-
-    .card h3, .choice-card h3 {
-      font-size: 22px;
-      margin: 12px 0 6px 0;
-      color: var(--dark-teal);
-    }
-
-    .card p, .choice-card p {
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--text-muted);
-      margin: 0;
-    }
-
-    .card .role-title {
-      font-weight: 700;
-      color: var(--coral);
-      font-size: 15px;
-      margin-bottom: 8px;
-    }
-
-    /* Journey Interface with Interactive Line */
-    .journey-layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      min-height: 680px;
-    }
-
-    .sidebar {
-      background: #1f565c;
-      color: white;
-      padding: 40px 24px;
-      display: flex;
-      flex-direction: column;
-      border-right: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .sidebar h3 {
-      font-size: 18px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--teal);
-      margin: 0 0 32px 12px;
-    }
-
-    .journey-timeline {
+    .bottle {
+      width: 120px;
+      height: 210px;
+      border: 6px solid white;
+      border-radius: 50px 50px 34px 34px;
       position: relative;
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      padding-left: 16px;
     }
 
-    /* The Continuous Visual Journey Line */
-    .journey-timeline::before {
+    .bottle::before {
       content: "";
       position: absolute;
-      left: 6px;
-      top: 10px;
-      bottom: 24px;
-      width: 2px;
-      background: rgba(255, 255, 255, 0.15);
-      z-index: 1;
+      top: -34px;
+      left: 22px;
+      width: 76px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--coral);
     }
 
-    .step {
-      position: relative;
-      padding: 0 0 28px 24px;
-      font-size: 15px;
-      color: rgba(255, 255, 255, 0.5);
-      transition: all 0.3s ease;
-      font-weight: 500;
-    }
+    .bottle:nth-child(2)::before { background: #ffdc8b; }
+    .bottle:nth-child(3)::before { background: var(--navy); }
 
-    /* Journey Nodes */
-    .step::before {
-      content: "";
+    .milk {
       position: absolute;
-      left: -14px;
-      top: 4px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #1f565c;
-      border: 2px solid rgba(255, 255, 255, 0.3);
-      z-index: 2;
-      transition: all 0.3s ease;
-    }
-
-    .step.active-step {
-      color: var(--yellow);
-      font-weight: 700;
-      opacity: 1;
-    }
-
-    .step.active-step::before {
-      background: var(--yellow);
-      border-color: var(--yellow);
-      box-shadow: 0 0 0 4px rgba(255, 229, 122, 0.25);
-    }
-
-    .step.completed-step {
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .step.completed-step::before {
-      background: var(--teal);
-      border-color: var(--teal);
-    }
-
-    .journey-main {
-      padding: 50px;
+      bottom: 0;
+      width: 100%;
       background: white;
-      display: flex;
-      flex-direction: column;
+      border-radius: 0 0 28px 28px;
     }
 
-    /* Presentation Screen Wireframe Containers */
-    .presentation-mockup {
-      background: #fafdfd;
-      border: 1px solid var(--border-light);
-      border-radius: 12px;
-      padding: 32px;
-      margin: 24px 0;
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.02);
-    }
+    .milk.full { height: 85%; }
+    .milk.half { height: 48%; }
+    .milk.low { height: 70%; }
 
-    .mockup-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border-light);
-      padding-bottom: 12px;
-      margin-bottom: 20px;
-    }
-
-    .mockup-title {
-      font-weight: 700;
-      color: var(--dark-teal);
-      font-size: 16px;
-    }
-
-    .mockup-body {
-      color: var(--text);
-      font-size: 15px;
-      line-height: 1.6;
-    }
-
-    /* Strategic Insight Callouts */
-    .insight-card {
-      background: #fff5f6;
-      border-left: 4px solid var(--coral);
-      padding: 20px;
-      border-radius: 0 12px 12px 0;
-      margin-top: auto;
-    }
-
-    .insight-card h4 {
-      margin: 0 0 6px 0;
-      color: var(--coral);
-      font-size: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .insight-card p {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.5;
-      color: var(--text);
-    }
-
-    .selected-pill {
-      display: inline-block;
-      background: var(--border-light);
-      color: var(--dark-teal);
-      padding: 6px 14px;
-      border-radius: 20px;
-      margin-bottom: 16px;
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .booking-spec {
+    .splash {
+      width: 520px;
+      height: 360px;
       background: white;
-      border: 1px solid var(--border-light);
-      border-radius: 12px;
-      padding: 20px;
-      margin: 16px 0;
-    }
-
-    .button-row {
+      border-radius: 45% 55% 54% 46% / 46% 38% 62% 54%;
       display: flex;
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      border: 2px solid var(--border-light);
-      color: var(--text-muted);
-    }
-    .btn-secondary:hover {
-      background: var(--border-light);
-      color: var(--text);
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* Thank You Screen Cover */
-    .thank-you {
-      min-height: 680px;
-      background: linear-gradient(135deg, var(--dark-teal) 0%, var(--teal) 100%);
-      display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      color: white;
-      padding: 40px;
+      color: black;
+      padding: 80px;
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 70px;
+      animation: float 4s ease-in-out infinite;
     }
 
-    .thank-you h2 {
-      color: white;
-      font-size: 48px;
-      margin-bottom: 16px;
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-14px) rotate(2deg); }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
+    .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 60px;
+      width: min(1100px, 100%);
+      margin-bottom: 80px;
     }
+
+    .persona-card, .info-card, .option-card {
+      background: white;
+      color: var(--text);
+      border-radius: 32px;
+      padding: 32px;
+      transition: 0.25s ease;
+    }
+
+    .persona-card {
+      text-align: left;
+      min-height: 360px;
+      border: 4px solid transparent;
+      cursor: pointer;
+    }
+
+    .persona-card:hover,
+    .persona-card.selected {
+      border-color: var(--coral);
+      transform: translateY(-8px);
+    }
+
+    .persona-top {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .avatar {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: #ffd1c2;
+      display: grid;
+      place-items: center;
+      font-size: 42px;
+    }
+
+    .persona-card h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+    }
+
+    .role { color: #888; font-size: 16px; }
+
+    .persona-card p {
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .details-title {
+      color: #ff967f;
+      font-weight: 800;
+      margin-top: 18px;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      font-size: 13px;
+      margin: 10px 0;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 70px;
+      width: min(1100px, 100%);
+      margin-bottom: 100px;
+    }
+
+    .option-card {
+      border: 4px solid transparent;
+      cursor: pointer;
+      min-height: 110px;
+    }
+
+    .option-card:hover,
+    .option-card.selected {
+      border-color: var(--coral);
+      transform: translateY(-6px);
+    }
+
+    .option-card h3 {
+      font-size: 24px;
+      margin: 0 0 10px;
+    }
+
+    .option-card p {
+      color: #888;
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .phone {
+      width: 340px;
+      height: 560px;
+      background: var(--gray);
+      border-radius: 32px;
+      margin-bottom: 60px;
+      display: grid;
+      place-items: center;
+      color: #888;
+      font-size: 22px;
+      overflow: hidden;
+    }
+
+    .phone video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .booking-cards {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 80px;
+    }
+
+    .info-card {
+      width: 300px;
+      text-align: left;
+    }
+
+    .check {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #208b3a;
+      color: var(--teal);
+      display: grid;
+      place-items: center;
+      font-size: 60px;
+      font-weight: bold;
+    }
+
+    .journey {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      background: rgba(255,255,255,0.24);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 14px 18px;
+      display: none;
+      gap: 10px;
+      z-index: 20;
+    }
+
+    .journey.show { display: flex; }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+    }
+
+    .dot.done, .dot.current { background: var(--coral); }
+
+    .back {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      z-index: 20;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-size: 14px;
+      display: none;
+    }
+
+    .back.show { display: block; }
 
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; text-align: center; }
-      .hero-text-side { text-align: center; }
-      .hero-graphic-side { display: none; }
-      .persona-grid, .choice-grid { grid-template-columns: 1fr; }
-      .journey-layout { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
+      .persona-grid, .options {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .booking-cards {
+        flex-direction: column;
+      }
+
+      .bottles {
+        gap: 24px;
+        transform: scale(0.85);
+      }
+
+      .splash {
+        width: 90vw;
+        height: 320px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="app">
-    <header>
-      <div class="logo-container">
-        <div class="logo-badge">SMN</div>
-        <span class="logo-text">spilt milk nannies</span>
+  <button class="back" id="backBtn" onclick="goHome()">Return Home</button>
+  <div class="journey" id="journey"></div>
+
+  <section class="screen active" id="home">
+    <div class="tag">HCDE CAPSTONE · SPILT MILK NANNIES</div>
+    <h1>Spilt Milk Nannies:<br>Reimagining the Nanny Experience</h1>
+
+    <div class="bottles">
+      <div class="bottle"><div class="milk full"></div></div>
+      <div class="bottle"><div class="milk half"></div></div>
+      <div class="bottle"><div class="milk low"></div></div>
+    </div>
+
+    <p class="subtitle">Team 6%<br>Anushka Sharma, Sophia Tang, Spriha Sahni & Zoe Martin</p>
+    <button onclick="showScreen('about')">Learn More →</button>
+  </section>
+
+  <section class="screen" id="about">
+    <h1>What is Spilt Milk Nannies?</h1>
+    <div class="splash">
+      An online platform that connects families with local nannies.
+    </div>
+    <button onclick="showScreen('choose')">Try it out!</button>
+  </section>
+
+  <section class="screen" id="choose">
+    <h1>Choose a Persona</h1>
+    <p class="subtitle">Step into the shoes of a real nanny and experience the redesigned Spilt Milk Nannies platform through their journey.</p>
+
+    <div class="persona-grid">
+      <div class="persona-card" onclick="selectPersona('jenna')">
+        <div class="persona-top">
+          <div class="avatar">👩🏽</div>
+          <div><h2>Jenna Sanders</h2><div class="role">Part-time Nanny</div></div>
+        </div>
+        <p>Jenna is a part-time nanny and full-time student at the University of Washington. She is allergic to pets.</p>
+        <div class="details-title">Details</div>
+        <div class="detail-row"><b>Age:</b><span>22 years old</span></div>
+        <div class="detail-row"><b>Chapter:</b><span>Seattle</span></div>
+        <div class="detail-row"><b>Preferences:</b><span>No pets</span></div>
       </div>
-      <nav class="nav">
-        <span class="presentation-badge">UX Redesign Case Study</span>
-      </nav>
-    </header>
 
-    <main>
-      <!-- SCREEN 1: WELCOME SLIDE -->
-      <section class="screen active" id="welcome">
-        <div class="hero">
-          <div class="hero-text-side">
-            <div class="eyebrow" style="color: var(--yellow);">Interactive UX Walkthrough</div>
-            <h1>Empowering Nannies Through Strategic Interface Redesign</h1>
-            <p>
-              An analytical journey through our updated ecosystem. This interactive application maps how structural modifications to onboarding, personalized preferences, and post-appointment loops directly address functional workflows for real niche user requirements.
-            </p>
-            <button onclick="showScreen('personas')">Begin Case Study</button>
-          </div>
-          <div class="hero-graphic-side">
-            <!-- Modern flat vector milk carton representation -->
-            <svg class="hero-illustration" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="50" y="60" width="100" height="110" rx="12" fill="white" />
-              <path d="M50 60 L100 20 L150 60 Z" fill="#ffe57a" />
-              <rect x="70" y="90" width="60" height="45" rx="6" fill="#73c5ca" opacity="0.3" />
-              <circle cx="100" cy="112" r="12" fill="#f15673" />
-            </svg>
-          </div>
+      <div class="persona-card" onclick="selectPersona('betsy')">
+        <div class="persona-top">
+          <div class="avatar">👵🏼</div>
+          <div><h2>Betsy Adams</h2><div class="role">Full-time Nanny</div></div>
         </div>
-      </section>
+        <p>Betsy has been nannying with Spilt Milk Nannies for 10 years. She specializes in infant care.</p>
+        <div class="details-title">Details</div>
+        <div class="detail-row"><b>Age:</b><span>67 years old</span></div>
+        <div class="detail-row"><b>Chapter:</b><span>Seattle</span></div>
+        <div class="detail-row"><b>Preferences:</b><span>Infants</span></div>
+      </div>
 
-      <!-- SCREEN 2: PERSONA SELECTION -->
-      <section class="screen" id="personas">
-        <div class="content">
-          <div class="eyebrow">Target User Cohorts</div>
-          <h2>Select a Persona Framework</h2>
-          <p class="subtitle">
-            To evaluate the efficacy of the ecosystem updates, select a specialized persona framework below. Your selection contextualizes the journey steps with unique requirements.
-          </p>
-
-          <div class="persona-grid">
-            <!-- COHORT A: BETSY -->
-            <div class="card" onclick="selectPersona('betsy')">
-              <svg class="persona-vector" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="46" fill="#fff0e1"/>
-                <circle cx="50" cy="40" r="18" fill="#ff8a13" opacity="0.8"/>
-                <path d="M25 80 C 25 60, 75 60, 75 80" stroke="#ff8a13" stroke-width="8" stroke-linecap="round"/>
-                <circle cx="43" cy="38" r="2.5" fill="#3c3c3c"/>
-                <circle cx="57" cy="38" r="2.5" fill="#3c3c3c"/>
-                <path d="M44 46 Q 50 50 56 46" stroke="#3c3c3c" stroke-width="2.5" fill="none"/>
-                <circle cx="28" cy="78" r="10" stroke="#286f77" stroke-width="3" fill="none"/>
-              </svg>
-              <h3>Betsy</h3>
-              <p class="role-title">Accessibility Focus</p>
-              <p>Middle-aged professional nanny and wheelchair user. Requires precise structural filter options for single-floor layouts and accessible transit logic.</p>
-            </div>
-
-            <!-- COHORT B: ANDY -->
-            <div class="card" onclick="selectPersona('andy')">
-              <svg class="persona-vector" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="46" fill="#eef9fa"/>
-                <circle cx="50" cy="42" r="16" fill="#73c5ca"/>
-                <path d="M22 82 C 25 62, 75 62, 78 82" stroke="#286f77" stroke-width="8" stroke-linecap="round"/>
-                <rect x="36" y="36" width="12" height="6" rx="2" stroke="#3c3c3c" stroke-width="2" fill="none"/>
-                <rect x="52" y="36" width="12" height="6" rx="2" stroke="#3c3c3c" stroke-width="2" fill="none"/>
-                <path d="M48 39 L52 39" stroke="#3c3c3c" stroke-width="2"/>
-                <path d="M45 48 Q 50 52 55 48" stroke="#3c3c3c" stroke-width="2" fill="none"/>
-              </svg>
-              <h3>Andy</h3>
-              <p class="role-title">The Student Nanny</p>
-              <p>Part-time student managing higher education coursework and variable lecture shifts. Requires complex geographic parameters and volatile calendar matching.</p>
-            </div>
-
-            <!-- COHORT C: MARIA -->
-            <div class="card" onclick="selectPersona('maria')">
-              <svg class="persona-vector" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="46" fill="#fff0f2"/>
-                <circle cx="50" cy="40" r="17" fill="#e99aaa"/>
-                <path d="M24 80 C 24 58, 76 58, 76 80" stroke="#f15673" stroke-width="7" stroke-linecap="round"/>
-                <circle cx="42" cy="40" r="2" fill="#3c3c3c"/>
-                <circle cx="58" cy="40" r="2" fill="#3c3c3c"/>
-                <path d="M42 47 Q 50 53 58 47" stroke="#3c3c3c" stroke-width="2.5" fill="none"/>
-              </svg>
-              <h3>Maria</h3>
-              <p class="role-title">Infant Specialist</p>
-              <p>Highly credentialed neonatal care expert. Requires extensive clinical field visibility, comprehensive medical declarations, and precise baseline daily schedules.</p>
-            </div>
-          </div>
+      <div class="persona-card" onclick="selectPersona('tristan')">
+        <div class="persona-top">
+          <div class="avatar">👨🏼</div>
+          <div><h2>Tristan Cruz</h2><div class="role">Full-time Nanny</div></div>
         </div>
-      </section>
+        <p>Tristan prefers accessible, one-story households after an injury made stairs difficult.</p>
+        <div class="details-title">Details</div>
+        <div class="detail-row"><b>Age:</b><span>42 years old</span></div>
+        <div class="detail-row"><b>Chapter:</b><span>Seattle</span></div>
+        <div class="detail-row"><b>Preferences:</b><span>Accessible households</span></div>
+      </div>
+    </div>
+  </section>
 
-      <!-- SCREEN 3: DYNAMIC TIMELINE PRESENTATION -->
-      <section class="screen" id="journey">
-        <div class="journey-layout">
-          <aside class="sidebar">
-            <h3 id="sidePersona">Active Framework</h3>
-            <div class="journey-timeline">
-              <div class="step" id="step0">Onboarding Evolution</div>
-              <div class="step" id="step1">Granular Diagnostics</div>
-              <div class="step" id="step2">Dynamic Synchronization</div>
-              <div class="step" id="step3">Request Architecture</div>
-              <div class="step" id="step4">Pre-Appointment Protocol</div>
-              <div class="step" id="step5">Post-Appointment Loop</div>
-            </div>
-          </aside>
+  <section class="screen" id="jennaAvailability">
+    <h1>Let’s Set Jenna’s Availability</h1>
+    <p class="subtitle">Choose an availability time for Jenna so that families know when she’s free to nanny their children.</p>
+    <div class="options">
+      <div class="option-card" onclick="selectAvailability(this)"><h3>Mon, Wed, Fri</h3><p>4pm-10pm</p></div>
+      <div class="option-card" onclick="selectAvailability(this)"><h3>Tues, Thurs</h3><p>8pm-8am</p></div>
+      <div class="option-card" onclick="selectAvailability(this)"><h3>Sat, Sun</h3><p>8am-10pm</p></div>
+    </div>
+    <button onclick="showScreen('jennaBooking')">Next →</button>
+  </section>
 
-          <section class="journey-main" id="journeyContent"></section>
-        </div>
-      </section>
+  <section class="screen" id="jennaBooking">
+    <h1>Jenna’s Received a Booking!</h1>
+    <p class="subtitle">A family has requested to work with Jenna during her availability. They are a no pet family!</p>
 
-      <!-- SCREEN 4: CONCLUSION -->
-      <section class="screen" id="thanks">
-        <div class="thank-you">
-          <h2>Evaluation Complete</h2>
-          <p class="subtitle" style="color: white; opacity: 0.9;">
-            This architectural prototype maps out how deliberate design interventions remove systematic friction for complex nanny requirements.
-          </p>
-          <button class="btn-secondary" style="color: white; border-color: white;" onclick="restart()">Evaluate Alternate Cohort</button>
-        </div>
-      </section>
-    </main>
-  </div>
+    <div class="booking-cards">
+      <div class="info-card">
+        <div class="persona-top"><div class="avatar">👩🏽</div><div><h2>Jenna Sanders</h2><div class="role">Part-time Nanny</div></div></div>
+        <div class="details-title">Details</div>
+        <div class="detail-row"><b>Age:</b><span>22 years old</span></div>
+        <div class="detail-row"><b>Chapter:</b><span>Seattle</span></div>
+        <div class="detail-row"><b>Preferences:</b><span>No pets</span></div>
+      </div>
+
+      <div class="check">✓</div>
+
+      <div class="info-card">
+        <div class="persona-top"><div class="avatar">👩🏻</div><div><h2>Lisa Anderson</h2><div class="role">Mom of two</div></div></div>
+        <div class="details-title">Details</div>
+        <div class="detail-row"><b>Kids:</b><span>2 year old & 5 year old</span></div>
+        <div class="detail-row"><b>Location:</b><span>Seattle</span></div>
+        <div class="detail-row"><b>Notes:</b><span>No Pets</span></div>
+      </div>
+    </div>
+
+    <button onclick="showScreen('jennaPre')">Prepare for Booking →</button>
+  </section>
+
+  <section class="screen" id="jennaPre">
+    <h1>Let’s Get Jenna Ready</h1>
+    <div class="phone">Prototype Video</div>
+    <button onclick="showScreen('jennaDuring')">Next →</button>
+  </section>
+
+  <section class="screen" id="jennaDuring">
+    <h1>At the booking, Jenna...</h1>
+    <div class="phone">Prototype Video</div>
+    <button onclick="showScreen('jennaPost')">Next →</button>
+  </section>
+
+  <section class="screen" id="jennaPost">
+    <h1>Recapping Jenna’s Booking</h1>
+    <p class="subtitle">During the nanny appointment, Jenna gave snacks, played with the children on the trampoline and read story books to the 5 year old.</p>
+
+    <div class="options">
+      <div class="option-card"><h3>Favorite Snacks</h3><p>The 2 year old loves snack pouches and the 5 year old likes apples.</p></div>
+      <div class="option-card"><h3>Favorite Games</h3><p>The 2 year old prefers dolls and the 5 year old loves independent play.</p></div>
+      <div class="option-card"><h3>Favorite Books</h3><p>The 2 year old loves “To the Moon” and the 5 year old likes “Magic Treehouse.”</p></div>
+    </div>
+
+    <button onclick="showScreen('closing')">Next →</button>
+  </section>
+
+  <section class="screen" id="betsyAvailability">
+    <h1>Let’s Update Betsy’s Availability</h1>
+    <p class="subtitle">Betsy needs to temporarily reduce her availability this week because of a family emergency.<br><br>Remove an availability time.</p>
+
+    <div class="options">
+      <div class="option-card" onclick="selectAvailability(this)"><h3>Mon, Wed, Fri</h3><p>4pm-10pm</p></div>
+      <div class="option-card" onclick="selectAvailability(this)"><h3>Tues, Thurs</h3><p>8pm-8am</p></div>
+      <div class="option-card" onclick="selectAvailability(this)"><h3>Sat, Sun</h3><p>8am-10pm</p></div>
+    </div>
+
+    <button onclick="showScreen('betsyCalendar')">Next →</button>
+  </section>
+
+  <section class="screen" id="betsyCalendar">
+    <h1>Updating Betsy’s Availability</h1>
+    <div class="phone">Prototype Video</div>
+    <button onclick="showScreen('betsyOnboarding')">Next →</button>
+  </section>
+
+  <section class="screen" id="betsyOnboarding">
+    <h1>Let’s Get Betsy Onboarded...</h1>
+    <div class="phone">Prototype Video</div>
+    <button onclick="showScreen('closing')">Next →</button>
+  </section>
+
+  <section class="screen" id="closing">
+    <h1>Closing...</h1>
+    <div class="splash">
+      An online platform that connects families with local nannies.
+    </div>
+    <button onclick="goHome()">Try it out!</button>
+  </section>
 
   <script>
-    let activeCohort = null;
+    const screens = document.querySelectorAll(".screen");
+    const journey = document.getElementById("journey");
+    const backBtn = document.getElementById("backBtn");
 
-    const cohorts = {
-      betsy: {
-        name: "Betsy",
-        title: "Accessibility Specialist Framework",
-        description: "Assessing structural workflow mapping for structural barriers and physical home layout restrictions.",
-        preference: "Single-Story Layout Check"
-      },
-      andy: {
-        name: "Andy",
-        title: "Variable Academic Track Framework",
-        description: "Assessing calendar volatility logic and rapid geofenced travel threshold mapping.",
-        preference: "15-Mile Regional Perimeter"
-      },
-      maria: {
-        name: "Maria",
-        title: "Neonatal & Infant Care Track Framework",
-        description: "Assessing technical health validation details, allergy tracking metrics, and medical routine visibility.",
-        preference: "Infant Care Specialty Clearance"
-      }
-    };
+    let currentStep = 0;
 
     function showScreen(id) {
-      document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
+      screens.forEach(screen => screen.classList.remove("active"));
       document.getElementById(id).classList.add("active");
+
+      const showNav = id !== "home";
+      journey.classList.toggle("show", showNav);
+      backBtn.classList.toggle("show", showNav);
+
+      updateJourney(id);
+      window.scrollTo(0, 0);
     }
 
-    function updateTimelineIndicators(currentIndex) {
-      for (let i = 0; i <= 5; i++) {
-        const element = document.getElementById(`step${i}`);
-        element.classList.remove("active-step", "completed-step");
-        if (i === currentIndex) {
-          element.classList.add("active-step");
-        } else if (i < currentIndex) {
-          element.classList.add("completed-step");
-        }
+    function goHome() {
+      showScreen("home");
+    }
+
+    function selectPersona(persona) {
+      if (persona === "jenna") showScreen("jennaAvailability");
+      else if (persona === "betsy") showScreen("betsyAvailability");
+      else alert("Tristan’s journey can be added next!");
+    }
+
+    function selectAvailability(card) {
+      const group = card.parentElement.querySelectorAll(".option-card");
+      group.forEach(item => item.classList.remove("selected"));
+      card.classList.add("selected");
+    }
+
+    function updateJourney(id) {
+      const flow = [
+        "about",
+        "choose",
+        "jennaAvailability",
+        "jennaBooking",
+        "jennaPre",
+        "jennaDuring",
+        "jennaPost",
+        "betsyAvailability",
+        "betsyCalendar",
+        "betsyOnboarding",
+        "closing"
+      ];
+
+      currentStep = flow.indexOf(id);
+      journey.innerHTML = "";
+
+      for (let i = 0; i < 6; i++) {
+        const dot = document.createElement("div");
+        dot.classList.add("dot");
+        if (i < currentStep) dot.classList.add("done");
+        if (i === currentStep) dot.classList.add("current");
+        journey.appendChild(dot);
       }
-    }
-
-    function selectPersona(cohortKey) {
-      activeCohort = cohorts[cohortKey];
-      document.getElementById("sidePersona").innerText = activeCohort.name + "'s Scenario";
-      showScreen("journey");
-      renderOnboardingStep();
-    }
-
-    function renderOnboardingStep() {
-      updateTimelineIndicators(0);
-      document.getElementById("journeyContent").innerHTML = `
-        <span class="selected-pill">System Layer 1.0 — Identity Setup</span>
-        <div class="eyebrow">Onboarding Evolution</div>
-        <h2>Capturing Profile Scope Early</h2>
-        <p class="subtitle">The legacy system delayed user constraint definitions, triggering downstream booking mismatches. The updated model surfaces critical workflow variables during account configuration.</p>
-
-        <div class="presentation-mockup">
-          <div class="mockup-header">
-            <div class="mockup-title">Redesigned Account Setup Configuration Form — Active View</div>
-            <span style="font-size:12px; color:var(--teal); font-weight:bold;">High Fidelity Concept</span>
-          </div>
-          <div class="mockup-body">
-            <p><strong>Nanny Profile Classification:</strong> ${activeCohort.title}</p>
-            <p style="border: 1px solid var(--border-light); padding:12px; background:white; border-radius:6px; color:var(--text-muted);">
-              [✓] Surface specialized operational preferences immediately.<br>
-              [✓] Establish physical, scheduling, or medical environment parameters before indexing algorithms operate.
-            </p>
-          </div>
-        </div>
-
-        <div class="insight-card">
-          <h4>UX Strategy Rationale</h4>
-          <p>By moving high-priority structural questions to upfront account validation loops, the application avoids algorithmic match contamination, drastically scaling user trust from step one.</p>
-        </div>
-
-        <div class="button-row">
-          <button onclick="renderPreferencesStep()">Advance to Granular Diagnostics</button>
-        </div>
-      `;
-    }
-
-    function renderPreferencesStep() {
-      updateTimelineIndicators(1);
-      document.getElementById("journeyContent").innerHTML = `
-        <span class="selected-pill">System Layer 2.0 — Alignment Metrics</span>
-        <div class="eyebrow">Granular Diagnostics</div>
-        <h2>Mitigating Incompatible Matches</h2>
-        <p class="subtitle">Enabling explicit workspace filtering options empowers custom nanny cohorts to systematically exclude restrictive work environments.</p>
-
-        <div class="choice-grid">
-          <div class="choice-card">
-            <h3>Geofencing</h3>
-            <p>Locks dynamic match visibility strictly within custom transit boundaries.</p>
-          </div>
-
-          <div class="choice-card">
-            <h3>Medical Clearances</h3>
-            <p>Filters out environments mismatching documented allergen tolerances or wellness parameters.</p>
-          </div>
-
-          <div class="choice-card" style="border-color: var(--coral);">
-            <h3>${activeCohort.preference}</h3>
-            <p>Active condition automatically isolated to prioritize ${activeCohort.name}'s requirements.</p>
-          </div>
-        </div>
-
-        <div class="insight-card" style="margin-top:32px;">
-          <h4>UX Strategy Rationale</h4>
-          <p>Treating environmental and spatial parameters as hard logical gates minimizes matching failures and honors the physical and practical realities of the workforce.</p>
-        </div>
-
-        <div class="button-row">
-          <button class="btn-secondary" onclick="renderOnboardingStep()">Back</button>
-          <button onclick="renderAvailabilityStep()">Advance to Dynamic Synchronization</button>
-        </div>
-      `;
-    }
-
-    function renderAvailabilityStep() {
-      updateTimelineIndicators(2);
-      document.getElementById("journeyContent").innerHTML = `
-        <span class="selected-pill">System Layer 3.0 — Temporal Controls</span>
-        <div class="eyebrow">Dynamic Synchronization</div>
-        <h2>Asynchronous Calendar Inputs</h2>
-        <p class="subtitle">Replacing error-prone drop-downs with a cohesive matrix calendar. This interface supports complex, variable availability windows without shifting cognitive load onto the provider.</p>
-
-        <div class="presentation-mockup">
-          <div class="mockup-header">
-            <div class="mockup-title">Interactive Schedule Block Module</div>
-          </div>
-          <div class="mockup-body">
-            <p>Select target operational blocks to open calendar synchronization properties:</p>
-            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:12px;">
-              <div style="background:var(--yellow); padding:12px; border-radius:8px; text-align:center; font-weight:bold; cursor:pointer;" onclick="renderAvailabilityConfirmation('Monday Morning Window')">Mon Morning Block</div>
-              <div style="background:var(--border-light); padding:12px; border-radius:8px; text-align:center; cursor:pointer;" onclick="renderAvailabilityConfirmation('Wednesday Mid-Day Window')">Wed Mid-Day Block</div>
-              <div style="background:var(--border-light); padding:12px; border-radius:8px; text-align:center; cursor:pointer;" onclick="renderAvailabilityConfirmation('Weekend Intensive Window')">Sat/Sun Block</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="insight-card">
-          <h4>UX Strategy Rationale</h4>
-          <p>Allowing providers to easily click and claim variable scheduling blocks respects their fluid time commitments while securing consistent data inputs for matching.</p>
-        </div>
-
-        <div class="button-row">
-          <button class="btn-secondary" onclick="renderPreferencesStep()">Back</button>
-        </div>
-      `;
-    }
-
-    function renderAvailabilityConfirmation(selectedTimeframe) {
-      updateTimelineIndicators(2);
-      document.getElementById("journeyContent").innerHTML = `
-        <span class="selected-pill">System Layer 3.1 — Synchronization Verified</span>
-        <div class="eyebrow">Dynamic Synchronization</div>
-        <h2>Target Window Indexed: ${selectedTimeframe}</h2>
-        <p class="subtitle">Temporal coordinates successfully written to data tables. The dynamic booking engine will now simulate client-side request generation matching these specific constraints.</p>
-
-        <div class="presentation-mockup">
-          <div class="mockup-body" style="text-align:center; padding:20px;">
-            <p style="color:var(--dark-teal); font-weight:bold;">Dynamic Scheduling System Working As Intended</p>
-            <p style="color:var(--text-muted); font-size:14px;">Algorithmic check passed: Redundancy minimized across responsive system configurations.</p>
-          </div>
-        </div>
-
-        <div class="button-row">
-          <button onclick="renderBookingStep()">Simulate Client-Side Offer Routing</button>
-        </div>
-      `;
-    }
-
-    function renderBookingStep() {
-      updateTimelineIndicators(3);
-      document.getElementById("journeyContent").innerHTML = `
-        <span class="selected-pill">System Layer 4.0 — Offer Ingestion</span>
-        <div class="eyebrow">Request Architecture</div>
-        <h2>Context-Rich Offer Presentations</h2>
-        <p class="subtitle">The update trades minimal data notifications for complete system transparency. Offers provide immediate, high-fidelity context before the provider formally commits to the shift.</p>
-
-        <div class="booking-spec">
-          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-light); padding-bottom:8px; margin-bottom:12px;">
-            <strong style="color:var(--dark-teal); font-size:18px;">The Henderson Proposal</strong>
-            <span style="color:var(--coral); font-weight:bold;">Matching Your Preferences</span>
-          </div>
-          <p><strong>Temporal Coordinates:</strong> Standard Match Window</p>
-          <p><strong>Household Demographics:</strong> 1 Infant (8 Months), 1 Toddler (3 Years)</p>
-          <p><strong>Environmental Variables:</strong> ${activeCohort.preference} Confirmed</p>
-        </div>
-
-        <div class="insight-card">
-          <h4>UX Strategy Rationale</h4>
-          <p>Surfacing deep operational realities prior to job confirmation prevents late-stage cancellations, driving higher marketplace retention and service predictability.</p>
-        </div>
-
-        <div class="button-row">
-          <button class="btn-secondary" onclick="renderAvailabilityStep()">Back</button>
-          <button onclick="renderPreApptStep()">Accept Assignment & Move to Preparation</button>
-        </div>
-      `;
-    }
-
-    function renderPreApptStep() {
-      updateTimelineIndicators(4);
-      document.getElementById("journeyContent").innerHTML = `
-        <span class="selected-pill">System Layer 5.0 — Preparation Matrix</span>
-        <div class="eyebrow">Pre-Appointment Protocol</div>
-        <h2>Eliminating Operational Uncertainty</h2>
-        <p class="subtitle">Instead of relying on disorganized text-based parent notes, providers can access a standardized, high-density household brief layout.</p>
-
-        <div class="choice-grid">
-          <div class="choice-card" onclick="renderPreApptDetail('Household Logistics Brief', 'Provides access to clear entry instructions, smart-lock codes, emergency contacts, and architectural features verified during your matching process.')">
-            <h3>Household Logistics</h3>
-            <p>Access spatial parameters, entry protocols, and home layout details.</p>
-          </div>
-
-          <div class="choice-card" onclick="renderPreApptDetail('Developmental Care Profiles', 'Surfaces active infant sleep cycles, nutritional schedules, comforting techniques, and critical allergy tracking charts.')">
-            <h3>Child Specific Profiles</h3>
-            <p>Review behavioral charts, allergy notes, and routines.</p>
-          </div>
-
-          <div class="choice-card" onclick="renderPreApptDetail('Operational Safety Protocols', 'Maps critical emergency response workflows, medication permissions, and baseline incident response instructions.')">
-            <h3>Safety Checklists</h3>
-            <p>Review medical verifications and localized support parameters.</p>
-          </div>
-        </div>
-
-        <div class="insight-card" style="margin-top:32px;">
-          <h4>UX Strategy Rationale</h4>
-          <p>Providing structured data templates rather than messy, open-ended notes eliminates on-site guesswork and builds a high standard of care safety.</p>
-        </div>
-
-        <div class="button-row">
-          <button class="btn-secondary" onclick="renderBookingStep()">Back</button>
-        </div>
-      `;
-    }
-
-    function renderPreApptDetail(title, detailedCopy) {
-      updateTimelineIndicators(4);
-      document.getElementById("journeyContent").innerHTML = `
-        <span class="selected-pill">System Layer 5.1 — Core Data Feed</span>
-        <div class="eyebrow">Pre-Appointment Deep Dive</div>
-        <h2>${title}</h2>
-        <p class="subtitle">${detailedCopy}</p>
-
-        <div class="presentation-mockup">
-          <div class="mockup-body" style="background:white; padding:16px; border-radius:8px;">
-            <p><strong>Active Operational View:</strong> This interface module standardizes household data collection, making sure vital information is easy to scan while active on the job.</p>
-          </div>
-        </div>
-
-        <div class="button-row">
-          <button class="btn-secondary" onclick="renderPreApptStep()">Return to Preparation Matrix</button>
-          <button onclick="renderPostApptStep()">Simulate Shift Completion</button>
-        </div>
-      `;
-    }
-
-    function renderPostApptStep() {
-      updateTimelineIndicators(5);
-      document.getElementById("journeyContent").innerHTML = `
-        <span class="selected-pill">System Layer 6.0 — Feedback Optimization</span>
-        <div class="eyebrow">Post-Appointment Loop</div>
-        <h2>Securing Safe Workspace Data</h2>
-        <p class="subtitle">The post-appointment flow expands past basic star ratings. It introduces structured feedback controls that allow providers to protect their workspace preferences long-term.</p>
-
-        <div class="choice-grid">
-          <div class="choice-card" onclick="completeFrameworkSimulation()">
-            <h3>Preferred Workspace Routing</h3>
-            <p>Flags this account profile to automatically prioritize future matches within this family's layout parameters.</p>
-          </div>
-
-          <div class="choice-card" onclick="completeFrameworkSimulation()">
-            <h3>Anonymized Network Flags</h3>
-            <p>Logs operational adjustments (e.g., unreported stairs or structural barriers) to protect future provider dispatches.</p>
-          </div>
-
-          <div class="choice-card" onclick="completeFrameworkSimulation()">
-            <h3>System Matching Exclusion</h3>
-            <p>Quietly disconnects matchmaking logic from this household to protect provider safety and comfort.</p>
-          </div>
-        </div>
-
-        <div class="insight-card" style="margin-top:32px;">
-          <h4>UX Strategy Rationale</h4>
-          <p>Closing the loop with qualitative feedback mechanics gives providers agency, reduces churn, and turns subjective experiences into reliable platform data.</p>
-        </div>
-
-        <div class="button-row">
-          <button class="btn-secondary" onclick="renderPreApptStep()">Back</button>
-        </div>
-      `;
-    }
-
-    function completeFrameworkSimulation() {
-      showScreen("thanks");
-    }
-
-    function restart() {
-      activeCohort = null;
-      showScreen("personas");
     }
   </script>
 </body>
