@@ -5,12 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Spilt Milk Nannies</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,800&family=Inter:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@600;700&display=swap"
+    rel="stylesheet"
+  />
+
   <style>
     :root {
-      --teal: #6fc7c9;
-      --coral: #fb5f70;
-      --cream: #f6ead2;
+      --teal: #73c5ca;
+      --coral: #f16573;
+      --cream: #f0e6d8;
+      --cream-text: #8a6e56;
       --navy: #123978;
+      --yellow-cap: #f4d784;
       --text: #333333;
       --gray: #d9d9d9;
       --white: #ffffff;
@@ -20,7 +29,7 @@
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'Inter', Arial, Helvetica, sans-serif;
       background: var(--teal);
       color: white;
       overflow-x: hidden;
@@ -40,19 +49,54 @@
 
     .screen.active { display: flex; }
 
+    /* Decorative blurred gradient circles for landing page */
+    .screen#home::before,
+    .screen#home::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .screen#home::before {
+      width: 288px;
+      height: 288px;
+      top: -115px;
+      left: -115px;
+      background: radial-gradient(circle, rgba(45,156,143,1) 0%, rgba(45,156,143,0) 70%);
+      opacity: 0.2;
+    }
+
+    .screen#home::after {
+      width: 384px;
+      height: 384px;
+      bottom: -150px;
+      right: -130px;
+      background: radial-gradient(circle, rgba(232,115,74,1) 0%, rgba(232,115,74,0) 70%);
+      opacity: 0.15;
+    }
+
+    .screen#home > * { position: relative; z-index: 1; }
+
     h1 {
-      font-size: clamp(44px, 6vw, 76px);
-      line-height: 1.1;
-      margin: 0 0 32px;
-      font-weight: 800;
+      font-family: 'Fraunces', 'Inter', serif;
+      font-size: clamp(40px, 5.2vw, 60px);
+      line-height: 1.18;
+      margin: 0 0 56px;
+      font-weight: 700;
+      font-variation-settings: 'SOFT' 0, 'WONK' 1;
+      position: relative;
+      z-index: 4;
     }
 
     .subtitle {
       max-width: 700px;
-      font-size: 24px;
-      line-height: 1.55;
+      font-size: 20px;
+      line-height: 1.6;
       font-style: italic;
-      margin: 0 auto 80px;
+      font-weight: 400;
+      margin: 0 auto 40px;
     }
 
     button {
@@ -60,88 +104,116 @@
       cursor: pointer;
       background: var(--coral);
       color: white;
-      padding: 18px 42px;
+      padding: 16px 32px;
       border-radius: 16px;
-      font-size: 18px;
-      box-shadow: 0 18px 35px rgba(0,0,0,0.12);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 1.5;
+      box-shadow: 0 6px 10px rgba(45, 156, 143, 0.27);
       transition: 0.25s ease;
     }
 
     button:hover {
       transform: translateY(-4px);
-      box-shadow: 0 24px 42px rgba(0,0,0,0.18);
+      box-shadow: 0 14px 24px rgba(45, 156, 143, 0.32);
     }
 
     .tag {
       background: var(--cream);
-      color: #8a6a4c;
-      padding: 8px 24px;
+      color: var(--cream-text);
+      padding: 4px 16px;
       border-radius: 999px;
-      letter-spacing: 4px;
-      font-size: 14px;
-      margin-bottom: 32px;
+      letter-spacing: 1.44px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      line-height: 16px;
+      margin-bottom: 28px;
     }
 
     .bottles {
       display: flex;
-      gap: 70px;
-      margin: 30px 0 70px;
+      gap: 60px;
+      margin: 16px 0 56px;
       align-items: end;
     }
 
     .bottle {
-      width: 120px;
-      height: 210px;
-      border: 6px solid white;
-      border-radius: 50px 50px 34px 34px;
+      width: 112px;
+      height: auto;
+      display: block;
+    }
+
+    /* ---- About screen: bottle splash scene ---- */
+    .splash-scene {
       position: relative;
+      width: min(820px, 94vw);
+      height: 480px;
+      margin: 40px auto 60px;
     }
 
-    .bottle::before {
-      content: "";
+    .pour-bottle {
       position: absolute;
-      top: -34px;
-      left: 22px;
-      width: 76px;
-      height: 32px;
-      border-radius: 10px;
-      background: var(--coral);
+      /* Bottle base in upper-left (partly off-screen-top), cap angles down
+         toward—but does NOT overlap—the splash's upper-left edge. */
+      top: -150px;
+      left: -190px;
+      width: 200px;
+      height: auto;
+      transform-origin: 50% 50%;
+      transform: rotate(125deg);
+      animation: pour-tilt 5s ease-in-out infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.08));
+      z-index: 3;
     }
 
-    .bottle:nth-child(2)::before { background: #ffdc8b; }
-    .bottle:nth-child(3)::before { background: var(--navy); }
+    @keyframes pour-tilt {
+      0%, 100% { transform: rotate(120deg); }
+      50%      { transform: rotate(130deg); }
+    }
 
-    .milk {
+    /* Splash bubble = splatter + text in a shared box so the text is centered
+       relative to the splatter, not the scene. Inner % position pinpoints the
+       splatter's visual center (not its geometric center, which differs because
+       the splatter is asymmetric and has detached droplets). */
+    .splash-bubble {
       position: absolute;
-      bottom: 0;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 540px;
+      max-width: 90%;
+      animation: splash-float 5s ease-in-out infinite;
+    }
+
+    @keyframes splash-float {
+      0%, 100% { transform: translate(-50%, -50%) rotate(-1deg); }
+      50%      { transform: translate(-50%, -54%) rotate(1deg); }
+    }
+
+    .splash-svg {
+      display: block;
       width: 100%;
-      background: white;
-      border-radius: 0 0 28px 28px;
+      height: auto;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,0.08));
     }
 
-    .milk.full { height: 85%; }
-    .milk.half { height: 48%; }
-    .milk.low { height: 70%; }
-
-    .splash {
-      width: 520px;
-      height: 360px;
-      background: white;
-      border-radius: 45% 55% 54% 46% / 46% 38% 62% 54%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: black;
-      padding: 80px;
+    .splash-text {
+      position: absolute;
+      /* (49%, 55%) maps to the dense visual center of the splatter shape */
+      top: 55%;
+      left: 49%;
+      transform: translate(-50%, -50%);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
       font-size: 18px;
       line-height: 1.5;
-      margin-bottom: 70px;
-      animation: float 4s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50% { transform: translateY(-14px) rotate(2deg); }
+      font-weight: 600;
+      text-align: center;
+      width: 50%;
+      max-width: 240px;
+      z-index: 2;
     }
 
     .persona-grid {
@@ -355,23 +427,30 @@
 
   <section class="screen active" id="home">
     <div class="tag">HCDE CAPSTONE · SPILT MILK NANNIES</div>
-    <h1>Spilt Milk Nannies:<br>Reimagining the Nanny Experience</h1>
+    <h1>Spilt Milk Nannies:<br />Reimagining the Nanny Experience</h1>
 
     <div class="bottles">
-      <div class="bottle"><div class="milk full"></div></div>
-      <div class="bottle"><div class="milk half"></div></div>
-      <div class="bottle"><div class="milk low"></div></div>
+      <img class="bottle" src="assets/red-milk-bottle.svg" alt="Milk bottle with red cap" />
+      <img class="bottle" src="assets/yellow-milk-bottle.svg" alt="Milk bottle with yellow cap" />
+      <img class="bottle" src="assets/blue-milk-bottle.svg" alt="Milk bottle with navy cap" />
     </div>
 
-    <p class="subtitle">Team 6%<br>Anushka Sharma, Sophia Tang, Spriha Sahni & Zoe Martin</p>
+    <p class="subtitle">Team 6%<br />Anushka Sharma, Sophia Tang, Spriha Sahni &amp; Zoe Martin</p>
     <button onclick="showScreen('about')">Learn More →</button>
   </section>
 
   <section class="screen" id="about">
     <h1>What is Spilt Milk Nannies?</h1>
-    <div class="splash">
-      An online platform that connects families with local nannies.
+
+    <div class="splash-scene">
+      <img class="pour-bottle" src="assets/yellow-milk-bottle-tilted.svg" alt="Tilted milk bottle pouring" />
+
+      <div class="splash-bubble">
+        <img class="splash-svg" src="assets/milk-splatter.svg" alt="Milk splatter" />
+        <p class="splash-text">An online platform that connects families with local nannies.</p>
+      </div>
     </div>
+
     <button onclick="showScreen('choose')">Try it out!</button>
   </section>
 
@@ -508,9 +587,16 @@
 
   <section class="screen" id="closing">
     <h1>Closing...</h1>
-    <div class="splash">
-      An online platform that connects families with local nannies.
+
+    <div class="splash-scene">
+      <img class="pour-bottle" src="assets/yellow-milk-bottle-tilted.svg" alt="Tilted milk bottle pouring" />
+
+      <div class="splash-bubble">
+        <img class="splash-svg" src="assets/milk-splatter.svg" alt="Milk splatter" />
+        <p class="splash-text">An online platform that connects families with local nannies.</p>
+      </div>
     </div>
+
     <button onclick="goHome()">Try it out!</button>
   </section>
 
